@@ -114,6 +114,12 @@ public class BindsValue {
     public func setValue(key: String, value: Any) {
         adapter.setBindValue(key: key, value: value)
     }
+    
+    public func setClickHandler(
+        handler: @escaping (String) -> Void
+    ) {
+        adapter.setClickHandler(handler: handler)
+    }
 }
 
 public typealias Param = [String: String]

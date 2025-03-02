@@ -20,8 +20,8 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(
             name: "ComposeRemoteLayoutCore",
-            url: "https://gitlab.com/utsmannn/composeremotelayoutcore/-/raw/dae5a8e/ComposeRemoteLayoutCore.xcframework.zip?ref_type=tags&inline=false",
-            checksum: "fc06386201969062ccbba8a14254b63f42f223479853d42e927779f49f69ee2e"
+            url: "https://gitlab.com/utsmannn/composeremotelayoutcore/-/raw/v0.0.1-alpha05/ComposeRemoteLayoutCore.xcframework.zip?ref_type=tags&inline=false",
+            checksum: "3b0441d036a91b979976fd5da6ece45e1bcb073b5aba03c0a3d433fcc17fea01"
         ),
         .target(
             name: "ComposeRemoteLayoutSwift",
