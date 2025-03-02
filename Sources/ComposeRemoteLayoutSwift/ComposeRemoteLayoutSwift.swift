@@ -102,75 +102,75 @@ public struct RemoteLayoutView: UIViewControllerRepresentable {
 // MARK: - Remote Layout Dependencies
 @available(iOS 14.0, *)
 class RemoteLayoutDeps {
-class RemoteLayoutDeps {
-    static let remoteVierwControllerAdapter = RemoteViewControllerAdapter()
-}
-
-@available(iOS 14.0, *)
-public class BindsValue {
-    private let adapter = RemoteLayoutDeps.remoteVierwControllerAdapter
-    
-    public func setValue(key: String, value: Any) {
-        adapter.setBindValue(key: key, value: value)
+    class RemoteLayoutDeps {
+        static let remoteVierwControllerAdapter = RemoteViewControllerAdapter()
     }
-}
-
-typealias Param = [String: String]
-
-@available(iOS 14.0, *)
-@MainActor
-public class CustomNodes {
-    static func register<Content: View>(
-        type: String,
-        viewDataBuilder: @escaping (Param) -> Content
-    ) {
-        let adapter = RemoteLayoutDeps.remoteVierwControllerAdapter
+    
+    @available(iOS 14.0, *)
+    public class BindsValue {
+        private let adapter = RemoteLayoutDeps.remoteVierwControllerAdapter
         
-        adapter.registerUiView(type: type) { data in
-            let uiView = viewDataBuilder(data)
-            let viewWrapper = HostingWrapper(rootView: uiView)
-            let viewData = UIViewData(
-                uiView: viewWrapper,
-                widthDp: viewWrapper.naturalWidth,
-                heightDp: viewWrapper.naturalHeight
-            )
-            return viewData
+        public func setValue(key: String, value: Any) {
+            adapter.setBindValue(key: key, value: value)
+        }
+    }
+    
+    typealias Param = [String: String]
+    
+    @available(iOS 14.0, *)
+    @MainActor
+    public class CustomNodes {
+        static func register<Content: View>(
+            type: String,
+            viewDataBuilder: @escaping (Param) -> Content
+        ) {
+            let adapter = RemoteLayoutDeps.remoteVierwControllerAdapter
+            
+            adapter.registerUiView(type: type) { data in
+                let uiView = viewDataBuilder(data)
+                let viewWrapper = HostingWrapper(rootView: uiView)
+                let viewData = UIViewData(
+                    uiView: viewWrapper,
+                    widthDp: viewWrapper.naturalWidth,
+                    heightDp: viewWrapper.naturalHeight
+                )
+                return viewData
+            }
+        }
+    }
+    
+    // MARK: - Layout Component (Optional)
+    @available(iOS 14.0, *)
+    public class LayoutComponent {
+        @Published var jsonLayout: String
+        
+        init(jsonLayout: String) {
+            self.jsonLayout = jsonLayout
+        }
+        
+        public func updateJsonLayout(jsonLayout: String) {
+            self.jsonLayout = jsonLayout
+        }
+    }
+    
+    @available(iOS 14.0, *)
+    public func createLayoutComponent(_ jsonLayout: String) -> LayoutComponent {
+        .init(jsonLayout: jsonLayout)
+    }
+    
+    // MARK: - Dynamic Layout View
+    @available(iOS 14.0, *)
+    public struct DynamicLayoutView: View {
+        @Binding var jsonLayout: String
+        private var bindsValue: BindsValue
+        
+        init(jsonLayout: Binding<String>, bindsValue: BindsValue) {
+            self._jsonLayout = jsonLayout
+            self.bindsValue = bindsValue
+        }
+        
+        public var body: some View {
+            RemoteLayoutView(jsonLayout: jsonLayout)
         }
     }
 }
-
-// MARK: - Layout Component (Optional)
-@available(iOS 14.0, *)
-public class LayoutComponent {
-    @Published var jsonLayout: String
-    
-    init(jsonLayout: String) {
-        self.jsonLayout = jsonLayout
-    }
-    
-    public func updateJsonLayout(jsonLayout: String) {
-        self.jsonLayout = jsonLayout
-    }
-}
-
-@available(iOS 14.0, *)
-public func createLayoutComponent(_ jsonLayout: String) -> LayoutComponent {
-    .init(jsonLayout: jsonLayout)
-}
-
-// MARK: - Dynamic Layout View
-@available(iOS 14.0, *)
-public struct DynamicLayoutView: View {
-    @Binding var jsonLayout: String
-    private var bindsValue: BindsValue
-
-    init(jsonLayout: Binding<String>, bindsValue: BindsValue) {
-        self._jsonLayout = jsonLayout
-        self.bindsValue = bindsValue
-    }
-    
-    public var body: some View {
-        RemoteLayoutView(jsonLayout: jsonLayout)
-    }
-}
-
