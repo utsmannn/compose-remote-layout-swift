@@ -109,6 +109,8 @@ class RemoteLayoutDeps {
 public class BindsValue {
     private let adapter = RemoteLayoutDeps.remoteViewControllerAdapter
     
+    public init() {}
+    
     public func setValue(key: String, value: Any) {
         adapter.setBindValue(key: key, value: value)
     }
