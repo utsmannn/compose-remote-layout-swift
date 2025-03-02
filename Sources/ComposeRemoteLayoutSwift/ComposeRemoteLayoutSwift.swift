@@ -84,7 +84,7 @@ class HostingWrapperViewController<Content: View>: UIViewController {
 // MARK: - Remote Layout View
 @available(iOS 14.0, *)
 public struct RemoteLayoutView: UIViewControllerRepresentable {
-    private let remoteViewControllerAdapter = RemoteLayoutDeps.remoteVierwControllerAdapter
+    private let remoteViewControllerAdapter = RemoteLayoutDeps.remoteViewControllerAdapter
     let jsonLayout: String  // property yang selalu mendapatkan nilai terbaru
 
     public func makeUIViewController(context: Context) -> some UIViewController {
@@ -102,28 +102,28 @@ public struct RemoteLayoutView: UIViewControllerRepresentable {
 // MARK: - Remote Layout Dependencies
 @available(iOS 14.0, *)
 class RemoteLayoutDeps {
-    static let remoteVierwControllerAdapter = RemoteViewControllerAdapter()
+    static let remoteViewControllerAdapter = RemoteViewControllerAdapter()
 }
 
 @available(iOS 14.0, *)
 public class BindsValue {
-    private let adapter = RemoteLayoutDeps.remoteVierwControllerAdapter
+    private let adapter = RemoteLayoutDeps.remoteViewControllerAdapter
     
     public func setValue(key: String, value: Any) {
         adapter.setBindValue(key: key, value: value)
     }
 }
 
-typealias Param = [String: String]
+public typealias Param = [String: String]
 
 @available(iOS 14.0, *)
 @MainActor
 public class CustomNodes {
-    static func register<Content: View>(
+     public static func register<Content: View>(
         type: String,
         viewDataBuilder: @escaping (Param) -> Content
     ) {
-        let adapter = RemoteLayoutDeps.remoteVierwControllerAdapter
+        let adapter = RemoteLayoutDeps.remoteViewControllerAdapter
         
         adapter.registerUiView(type: type) { data in
             let uiView = viewDataBuilder(data)
